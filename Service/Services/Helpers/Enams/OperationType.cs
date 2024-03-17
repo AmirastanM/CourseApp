@@ -12,9 +12,18 @@ namespace Service.Services.Helpers.Enams
         GroupEdit,
         GroupDelete,
         GetGroupById,
-        GetAllGroupsByTeacher,
-        GetAllGroupsByRoom,
         GetAllGroups,
-        SearchGroupsByName
+        GetAllGroupsByTeacher,
+        GetAllGroupsByRoom,        
+        SearchGroupsByName,
+        StudentCreate,
+        StudentEdit,
+        StudentDelete,
+        GetAllStudents,
+        GetStudentById,
+        GetStudentByAge,
+        GetAllStudentByGroup,
+        SearchStudentByNameOrSurname
+
     }
 }

@@ -13,6 +13,6 @@ namespace Service.Services.Helpers.Extensions
             Console.ForegroundColor = color;
             Console.WriteLine(text);
             Console.ResetColor();
-        }
+        }               
     }
 }

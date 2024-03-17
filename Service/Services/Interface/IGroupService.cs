@@ -13,10 +13,11 @@ namespace Service.Services.Interface
         void Update(int? id, Group data);
         void Delete(int? id);
         Group GetById(int? id);
-        List<Group> GetAllByTeacher(string teacher);
-        List<Group> GetAllByRoom(string room);
+        //List<Group> GetAllByTeacher(string teacher);
+        //List<Group> GetAllByRoom(string room);
         List<Group> GetAll();
-        List<Group> SearchByName(string searchText);
+        //List<Group> SearchByName(string searchText);
+        List<Group> GetAllWhithExpression(Func<Group, bool> predicate);
 
     }
 }

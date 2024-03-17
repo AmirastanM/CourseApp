@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Service.Services
 {
@@ -16,6 +17,9 @@ namespace Service.Services
     {
         private readonly IGroupRepository _groupRepository;
         private int count = 1;
+
+       
+
         public GroupService()
         {
             _groupRepository = new GroupRepository();
@@ -44,29 +48,46 @@ namespace Service.Services
             return _groupRepository.GetAll();
         }
 
-        public List<Group> GetAllByRoom(string room)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<Group> GetAllByRoom(string room)
+        //{
+        //    return _groupRepository.GetAllByRoom(room);
+        //}
 
-        public List<Group> GetAllByTeacher(string teacher)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<Group> GetAllByTeacher(string teacher)
+        //{
+        //    return _groupRepository.GetAllByRoom(teacher);
+        //}
 
         public Group GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id is null) throw new ArgumentNullException();
+
+            Group group = _groupRepository.GetById((int)id);
+
+            if (group is null) throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            return group;
         }
 
-        public List<Group> SearchByName(string searchText)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<Group> SearchByName(string searchText)
+        //{
+        //    return _groupRepository.GetAllWhithExpression(m => m.Name.ToLower().Contains(searchText));
+        //}
 
         public void Update(int? id, Group data)
         {
-            throw new NotImplementedException();
+            
+            
+
+            
+            
         }
+
+        public List<Group> GetAllWhithExpression(Func<Group, bool> predicate)
+        {
+            return _groupRepository.GetAllWhithExpression(predicate);
+        }
+        
+
     }
 }
