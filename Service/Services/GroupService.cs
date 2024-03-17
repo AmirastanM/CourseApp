@@ -48,16 +48,6 @@ namespace Service.Services
             return _groupRepository.GetAll();
         }
 
-        //public List<Group> GetAllByRoom(string room)
-        //{
-        //    return _groupRepository.GetAllByRoom(room);
-        //}
-
-        //public List<Group> GetAllByTeacher(string teacher)
-        //{
-        //    return _groupRepository.GetAllByRoom(teacher);
-        //}
-
         public Group GetById(int? id)
         {
             if (id is null) throw new ArgumentNullException();
@@ -69,11 +59,7 @@ namespace Service.Services
             return group;
         }
 
-        //public List<Group> SearchByName(string searchText)
-        //{
-        //    return _groupRepository.GetAllWhithExpression(m => m.Name.ToLower().Contains(searchText));
-        //}
-
+       
         public void Update(int? id, Group data)
         {
             

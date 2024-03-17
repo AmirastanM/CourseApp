@@ -6,12 +6,14 @@ using Service.Services.Helpers.Extensions;
 using System.Diagnostics;
 using System.Reflection.Emit;
 
-GetMenues();
+
 
 GroupController groupController = new();
 
 while (true)
 {
+    GetMenues();
+
     Operation: string operationStr = Console.ReadLine();
 
     int operation;
@@ -38,13 +40,13 @@ while (true)
                 groupController.GetAll();
                 break;
             case (int)OperationType.GetAllGroupsByTeacher:
-                //---
+                groupController.GetAllByTeacher();
                 break;
             case (int)OperationType.GetAllGroupsByRoom:
-                //---
+                groupController.GetAllByRoom();
                 break;
             case (int)OperationType.SearchGroupsByName:
-                //---
+                groupController.SearchGroupByName();
                 break;
             case (int)OperationType.StudentCreate:
                 //---

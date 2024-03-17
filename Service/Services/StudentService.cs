@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Repository.Data;
+using Service.Services.Helpers.Constants;
+using Service.Services.Helpers.Exceptions;
 
 namespace Service.Services
 {
@@ -17,6 +20,7 @@ namespace Service.Services
         {
             _studentRepository = new StudentRepository();
         }
+
         public void Create(Student data)
         {
             throw new NotImplementedException();
@@ -24,12 +28,18 @@ namespace Service.Services
 
         public void Delete(int? id)
         {
-            throw new NotImplementedException();
+            if (id is null) throw new ArgumentNullException();
+
+            Student student = _studentRepository.GetById((int)id);
+
+            if (student is null) throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            _studentRepository.Delete(student);
         }
 
-        public Student GetByAge(int age)
+        public List<Student> GetByAge(int age)
         {
-            throw new NotImplementedException();
+            return AppDbContext<Student>.datas.Where(m => m.Age == age).ToList();
         }
 
         public List<Student> GetByGroupId(int groupId)

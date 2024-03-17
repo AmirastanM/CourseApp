@@ -30,18 +30,19 @@ namespace CourseApp.Controllers
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
                 goto Group;
             }
+
             var result = _groupService.GetAll();
-            foreach ( var item in result )
+            foreach (var item in result)
             {
-                if( item.Name.ToLower() == groupName.ToLower().Trim() )
+                if (item.Name.ToLower() == groupName.ToLower().Trim())
                 {
                     ConsoleColor.Red.WriteConsole("This name already is exsist");
                     goto Group;
                 }
             }
-                        
+
             ConsoleColor.Cyan.WriteConsole("Add teacher name: ");
-            Teacher: string teacherName = Console.ReadLine();
+        Teacher: string teacherName = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(teacherName))
             {
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
@@ -54,17 +55,17 @@ namespace CourseApp.Controllers
             }
 
             ConsoleColor.Cyan.WriteConsole("Add room name: ");
-            Room: string roomName = Console.ReadLine();
-            if(string.IsNullOrWhiteSpace(roomName))
+        Room: string roomName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(roomName))
             {
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
                 goto Room;
             }
-          
+
             {
                 try
                 {
-                    _groupService.Create(new Domain.Models.Group {Name = groupName.Trim(), Teacher = teacherName.Trim(), Room = roomName.Trim() });
+                    _groupService.Create(new Domain.Models.Group { Name = groupName.Trim(), Teacher = teacherName.Trim(), Room = roomName.Trim() });
                     ConsoleColor.Green.WriteConsole("Data successfully added");
                 }
                 catch (Exception ex)
@@ -73,15 +74,15 @@ namespace CourseApp.Controllers
                     ConsoleColor.Red.WriteConsole(ex.Message);
                     goto Group;
                 }
-                
 
 
-            }            
-            
+
+            }
+
         }
-        
+
         public void GetAll()
-        {         
+        {
             var response = _groupService.GetAll();
 
 
@@ -95,10 +96,10 @@ namespace CourseApp.Controllers
         public void Delete()
         {
             ConsoleColor.Cyan.WriteConsole("Please add group id:");
-            Id: string idStr = Console.ReadLine();
+        Id: string idStr = Console.ReadLine();
             int id;
             bool isCorrectIdFormat = int.TryParse(idStr, out id);
-            if(string.IsNullOrEmpty(idStr))
+            if (string.IsNullOrEmpty(idStr))
             {
                 ConsoleColor.Red.WriteConsole("Id cant't be empty, please write again");
                 goto Id;
@@ -130,39 +131,142 @@ namespace CourseApp.Controllers
         Id: string idStr = Console.ReadLine();
             int id;
             bool isCorrectIdFormat = int.TryParse(idStr, out id);
-            if (string.IsNullOrEmpty(idStr))
-            {
-                ConsoleColor.Red.WriteConsole("Id cant't be empty, please write again");
-                goto Id;
-            }
             if (isCorrectIdFormat)
             {
-                try
+                if (string.IsNullOrEmpty(idStr))
                 {
-                    _groupService.GetById(id);
-                    var result = _groupService.GetById(id);
-                    string data = $"Id: {result.Id}, Group name: {result.Name}, Group Room: {result.Room}";
-                    Console.WriteLine(data);
+                    ConsoleColor.Red.WriteConsole("Id cant't be empty, please write again");
+                    goto Id;
                 }
-                catch (Exception ex)
+                if (isCorrectIdFormat)
                 {
-                    ConsoleColor.Red.WriteConsole(ex.Message);
+                    try
+                    {
+                        _groupService.GetById(id);
+                        var result = _groupService.GetById(id);
+                        string data = $"Id: {result.Id}, Group name: {result.Name}, Group Room: {result.Room}";
+                        Console.WriteLine(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        ConsoleColor.Red.WriteConsole(ex.Message);
+                        goto Id;
+                    }
+                }
+
+                else
+                {
+                    ConsoleColor.Red.WriteConsole("Id is not exsist");
                     goto Id;
                 }
             }
-
             else
             {
-                ConsoleColor.Red.WriteConsole("Id is not exsist");
+                ConsoleColor.Red.WriteConsole("Input format is wrong, please enter correct format again");
                 goto Id;
             }
+
         }
 
         public void GetAllByTeacher()
         {
+            ConsoleColor.Cyan.WriteConsole("Please add teacher name:");
+        Teacher: string teacherName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(teacherName))
+            {
+                ConsoleColor.Red.WriteConsole("Input can't be empty");
+                goto Teacher;
+            }
+            try
+            {
+                var result = _groupService.GetAllWhithExpression(m => m.Teacher == teacherName);
+                if (result.Count == 0)
+                {
+                    ConsoleColor.Red.WriteConsole("Teacher not found");
+                }
 
-        }
+                foreach (var item in result)
+                {
+                    string data = $"Id: {item.Id} Group name: {item.Name}, Group Room: {item.Room}";
+                    Console.WriteLine(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ConsoleColor.Red.WriteConsole(ex.Message);
+                goto Teacher;
+            }        
             
         }
+
+        public void GetAllByRoom()
+        {
+            ConsoleColor.Cyan.WriteConsole("Please add room name:");
+        Room: string roomName = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(roomName))
+            {
+                ConsoleColor.Red.WriteConsole("Input can't be empty");
+                goto Room;
+            }
+            try
+            {
+                var result = _groupService.GetAllWhithExpression(m => m.Room == roomName);
+                if (result.Count == 0)
+                {
+                    ConsoleColor.Red.WriteConsole("Room is not found");
+                }
+
+                foreach (var item in result)
+                {
+                    string data = $"Id: {item.Id} Group name: {item.Name}, Group Room: {item.Room}";
+                    Console.WriteLine(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ConsoleColor.Red.WriteConsole(ex.Message);
+                goto Room;
+            }
+        }
+
+        public void SearchGroupByName()
+        {
+            ConsoleColor.Cyan.WriteConsole("Please add group name:");
+            
+        SearchByGroupName: string textStr = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(textStr))
+            {
+                ConsoleColor.Red.WriteConsole("Input can't be empty");
+                goto SearchByGroupName;
+            }            
+            try
+            {
+                var result = _groupService.GetAllWhithExpression(m => m.Name.ToLower().Trim().Contains(textStr.ToLower().Trim()));
+                if (result == null)
+                {
+                    ConsoleColor.Red.WriteConsole("Group is not found");
+                    goto SearchByGroupName;
+                }
+
+                foreach (var item in result)
+                {
+                    string data = $"Id: {item.Id} Group name: {item.Name}, Group Room: {item.Room}";
+                    Console.WriteLine(data);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ConsoleColor.Red.WriteConsole(ex.Message);
+                goto SearchByGroupName;
+            }
+        }
     }
+}
+
+
+     
+ 
 

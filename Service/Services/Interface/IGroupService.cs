@@ -12,11 +12,8 @@ namespace Service.Services.Interface
         void Create(Group data);
         void Update(int? id, Group data);
         void Delete(int? id);
-        Group GetById(int? id);
-        //List<Group> GetAllByTeacher(string teacher);
-        //List<Group> GetAllByRoom(string room);
-        List<Group> GetAll();
-        //List<Group> SearchByName(string searchText);
+        Group GetById(int? id);       
+        List<Group> GetAll();     
         List<Group> GetAllWhithExpression(Func<Group, bool> predicate);
 
     }
