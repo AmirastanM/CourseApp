@@ -16,14 +16,22 @@ namespace Service.Services
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
+        
+
+        int count = 1;
+
         public StudentService()
         {
             _studentRepository = new StudentRepository();
+           
         }
 
         public void Create(Student data)
         {
-            throw new NotImplementedException();
+            if (data is null) throw new ArgumentNullException();
+            data.Id = count;
+            _studentRepository.Create(data);
+            count++;           
         }
 
         public void Delete(int? id)
@@ -49,12 +57,18 @@ namespace Service.Services
 
         public Student GetById(int? id)
         {
-            throw new NotImplementedException();
+            if (id is null) throw new ArgumentNullException();
+
+            Student student = _studentRepository.GetById((int)id);
+
+            if (student is null) throw new NotFoundException(ResponseMessages.DataNotFound);
+
+            return student;
         }
 
         public List<Student> SearchByNameOrSurname(string searchtext)
         {
-            throw new NotImplementedException();
+            return AppDbContext<Student>.datas.Where(m => m.Name == searchtext || m.Surname == searchtext).ToList();
         }
 
         public void Update(int? id, Student data)

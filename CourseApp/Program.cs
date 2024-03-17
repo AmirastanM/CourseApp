@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 
 
 GroupController groupController = new();
+StudentController studentController = new();
 
 while (true)
 {
@@ -49,19 +50,19 @@ while (true)
                 groupController.SearchGroupByName();
                 break;
             case (int)OperationType.StudentCreate:
-                //---
+                studentController.Create();
                 break;
             case (int)OperationType.StudentEdit:
                 //---
                 break;
             case (int)OperationType.StudentDelete:
-                //---
+                studentController.Delete();
                 break;
             case (int)OperationType.GetAllStudents:
-                //---
+                studentController.GetAllStudents();
                 break;
             case (int)OperationType.GetStudentById:
-                //---
+                studentController.GetById();
                 break;
             case (int)OperationType.GetStudentByAge:
                 //---

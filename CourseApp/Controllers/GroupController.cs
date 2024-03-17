@@ -30,6 +30,7 @@ namespace CourseApp.Controllers
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
                 goto Group;
             }
+            
 
             var result = _groupService.GetAll();
             foreach (var item in result)
@@ -51,6 +52,11 @@ namespace CourseApp.Controllers
             if (!Regex.IsMatch(teacherName, @"^[\p{L}\p{M}' \.\-]+$"))
             {
                 ConsoleColor.Red.WriteConsole("Input format is wrong, please write again");
+                goto Teacher;
+            }
+            if(teacherName.Length <= 2)
+            {
+                ConsoleColor.Red.WriteConsole("Name can't be short than 2 char");
                 goto Teacher;
             }
 

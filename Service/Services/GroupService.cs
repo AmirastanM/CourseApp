@@ -16,6 +16,7 @@ namespace Service.Services
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _groupRepository;
+       
         private int count = 1;
 
        
@@ -23,6 +24,7 @@ namespace Service.Services
         public GroupService()
         {
             _groupRepository = new GroupRepository();
+            
         }
         public void Create(Group data)
         {
