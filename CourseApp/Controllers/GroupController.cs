@@ -73,7 +73,7 @@ namespace CourseApp.Controllers
             {
                 try
                 {
-                    _groupService.Create(new Domain.Models.Group { Name = groupName.Trim(), Teacher = teacherName.Trim(), Room = roomName.Trim() });
+                    _groupService.Create(new Domain.Models.Group { Name = groupName.Trim(), Teacher = teacherName.Trim(), Room = roomName.Trim()});
                     ConsoleColor.Green.WriteConsole("Data successfully added");
                 }
                 catch (Exception ex)
@@ -229,7 +229,7 @@ namespace CourseApp.Controllers
             }
             try
             {
-                var result = _groupService.GetAllWhithExpression(m => m.Room == roomName);
+                var result = _groupService.GetAllWhithExpression(m => m.Room == roomName.Trim().ToLower());
                 if (result.Count == 0)
                 {
                     ConsoleColor.Red.WriteConsole("Room is not found");
@@ -252,40 +252,38 @@ namespace CourseApp.Controllers
         public void SearchGroupByName()
         {
             ConsoleColor.Cyan.WriteConsole("Please add group name:");
-            
+
         SearchByGroupName: string textStr = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(textStr))
             {
                 ConsoleColor.Red.WriteConsole("Input can't be empty");
                 goto SearchByGroupName;
-            }            
+            }
             try
             {
                 var result = _groupService.GetAllWhithExpression(m => m.Name.ToLower().Trim().Contains(textStr.ToLower().Trim()));
-                if (result == null)
+                if (result.Count == 0)
                 {
                     ConsoleColor.Red.WriteConsole("Group is not found");
                     goto SearchByGroupName;
-                }
-                if (result != result)
-                {
-                    ConsoleColor.Red.WriteConsole("Group is not found");
-                    goto SearchByGroupName;
-                }
+                }              
 
                 foreach (var item in result)
                 {
                     string data = $"Id: {item.Id} Group name: {item.Name}, Group Room: {item.Room}";
                     Console.WriteLine(data);
                 }
-
             }
             catch (Exception ex)
             {
                 ConsoleColor.Red.WriteConsole(ex.Message);
                 goto SearchByGroupName;
             }
+
+            
+
         }
+       
     }
 }
 

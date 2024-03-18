@@ -72,20 +72,27 @@ namespace CourseApp.Controllers
 
             ConsoleColor.Cyan.WriteConsole("Please add student age:");
         Age: string ageStr = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(ageStr))
+            {
+                ConsoleColor.Red.WriteConsole("Age cant't be empty, please write again");
+                goto Age;
+            }
             int age;
             bool isCorrectIdFormat = int.TryParse(ageStr, out age);
             if (isCorrectIdFormat)
             {
-                if (string.IsNullOrWhiteSpace(ageStr))
-                {
-                    ConsoleColor.Red.WriteConsole("Id cant't be empty, please write again");
-                    goto Age;
-                }
+                
                 if (age < 15 || age > 50)
                 {
                     ConsoleColor.Red.WriteConsole("This age is not possible to add group, please enter correct age");
                     goto Age;
-                }
+                }                
+
+            }
+            else
+            {
+                ConsoleColor.Red.WriteConsole("Format is wrong, please add again");
+                goto Age;
 
             }
 
@@ -117,7 +124,7 @@ namespace CourseApp.Controllers
 
         {
             var response = _studentService.GetAll();
-            if (response is null)
+            if (!response.Any())
 
             {
                 ConsoleColor.Red.WriteConsole("Data not found");
@@ -246,7 +253,6 @@ namespace CourseApp.Controllers
                     ConsoleColor.Red.WriteConsole("Data not found please write again.");
                     goto Age;
 
-
                 }
             }
             else
@@ -254,7 +260,7 @@ namespace CourseApp.Controllers
                 ConsoleColor.Red.WriteConsole("Input format is wrong, please enter correct format again");
                 goto Age;
             }
-            }            
+        }            
     
         public void SearchByNameOrSurname()
         {
@@ -296,6 +302,7 @@ namespace CourseApp.Controllers
                 ConsoleColor.Cyan.WriteConsole("Please add Group Id:");
             GroupId: string groupIdStr = Console.ReadLine();
                 int id;
+
                 if (string.IsNullOrWhiteSpace(groupIdStr))
                 {
                     ConsoleColor.Red.WriteConsole("Input can't be empty");
