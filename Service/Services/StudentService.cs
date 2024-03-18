@@ -1,5 +1,4 @@
-﻿using Domain.Models;
-using Repository.Repositories.Interfaces;
+﻿using Repository.Repositories.Interfaces;
 using Repository.Repositories;
 using Service.Services.Interface;
 using System;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using Repository.Data;
 using Service.Services.Helpers.Constants;
 using Service.Services.Helpers.Exceptions;
+using Domain.Models;
 
 namespace Service.Services
 {
@@ -43,12 +43,7 @@ namespace Service.Services
             if (student is null) throw new NotFoundException(ResponseMessages.DataNotFound);
 
             _studentRepository.Delete(student);
-        }
-
-        public List<Student> GetByAge(int age)
-        {
-            return AppDbContext<Student>.datas.Where(m => m.Age == age).ToList();
-        }
+        }       
 
         public List<Student> GetByGroupId(int groupId)
         {
@@ -64,23 +59,24 @@ namespace Service.Services
             if (student is null) throw new NotFoundException(ResponseMessages.DataNotFound);
 
             return student;
-        }
-
-        public List<Student> SearchByNameOrSurname(string searchtext)
-        {
-            return AppDbContext<Student>.datas.Where(m => m.Name == searchtext || m.Surname == searchtext).ToList();
-        }
+        }        
 
         public void Update(int? id, Student data)
         {
             throw new NotImplementedException();
         }
 
-        public List<Student> GetAllStudents()
+        public List<Student> GetAll()
         {
             return _studentRepository.GetAll();
         }
+        public List<Student> GetAllWhithExpression(Func<Student, bool> predicate)
+        {
+           return _studentRepository.GetAllWhithExpression(predicate);
+        }
 
-        
+      
+
+
     }
 }

@@ -15,10 +15,12 @@ namespace CourseApp.Controllers
     internal class GroupController
     {
         private readonly IGroupService _groupService;
+        private readonly IStudentService _studentService;
 
         public GroupController()
         {
             _groupService = new GroupService();
+            _studentService = new StudentService();
         }
         public void Create()
         {
@@ -115,6 +117,12 @@ namespace CourseApp.Controllers
                 try
                 {
                     _groupService.Delete(id);
+                    var students = _studentService.GetAllWhithExpression(m => m.Group.Id == id); // exception , think about it back null 
+                    foreach (var student in students)
+                    {
+                        _studentService.Delete(student.Id);
+                    }
+
                     ConsoleColor.Green.WriteConsole("Data succsessfully deleted");
                 }
                 catch (Exception ex)
@@ -185,7 +193,7 @@ namespace CourseApp.Controllers
             }
             try
             {
-                var result = _groupService.GetAllWhithExpression(m => m.Teacher == teacherName);
+                var result = _groupService.GetAllWhithExpression(m => m.Teacher.Trim().ToLower() == teacherName.Trim().ToLower());
                 if (result.Count == 0)
                 {
                     ConsoleColor.Red.WriteConsole("Teacher not found");
@@ -251,6 +259,11 @@ namespace CourseApp.Controllers
             {
                 var result = _groupService.GetAllWhithExpression(m => m.Name.ToLower().Trim().Contains(textStr.ToLower().Trim()));
                 if (result == null)
+                {
+                    ConsoleColor.Red.WriteConsole("Group is not found");
+                    goto SearchByGroupName;
+                }
+                if (result != result)
                 {
                     ConsoleColor.Red.WriteConsole("Group is not found");
                     goto SearchByGroupName;

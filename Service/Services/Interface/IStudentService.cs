@@ -12,10 +12,11 @@ namespace Service.Services.Interface
         void Create(Student data);
         void Update(int? id, Student data);
         void Delete(int? id);
-        Student GetById(int? id);
-        List<Student> GetByAge(int age);
-        List<Student> GetByGroupId(int groupId);
-        List<Student> SearchByNameOrSurname(string searchtext);
-        List<Student> GetAllStudents();
+        Student GetById(int? id);        
+        List<Student> GetByGroupId(int groupId);       
+        List<Student> GetAll();
+        public List<Student> GetAllWhithExpression(Func<Student, bool> predicate);
+
+        
     }
 }

@@ -20,5 +20,9 @@ namespace Repository.Repositories
         {
             return AppDbContext<Student>.datas.FirstOrDefault(m => m.Age == age);
         }
+
+        
+
+        
     }
 }

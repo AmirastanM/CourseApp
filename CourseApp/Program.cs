@@ -59,19 +59,19 @@ while (true)
                 studentController.Delete();
                 break;
             case (int)OperationType.GetAllStudents:
-                studentController.GetAllStudents();
+                studentController.GetAll();
                 break;
             case (int)OperationType.GetStudentById:
                 studentController.GetById();
                 break;
             case (int)OperationType.GetStudentByAge:
-                //---
+                studentController.GetByAge();
                 break;
             case (int)OperationType.GetAllStudentByGroup:
-                //---
+                studentController.GetAllByGroup();
                 break;
             case (int)OperationType.SearchStudentByNameOrSurname:
-                //---
+                studentController.SearchByNameOrSurname();
                 break;
 
 
@@ -98,8 +98,14 @@ while (true)
 
 void GetMenues()
 {
-    ConsoleColor.Cyan.WriteConsole("Please choose operation : \n 1 - GroupCreate\r\n 2 - GroupEdit\r\n 3 - GroupDelete\r\n" +
-        " 4 - GetGroupById\r\n 5 - GetAllGroups\r\n 6 - GetAllGroupsByTeacher\r\n 7 - GetAllGroupsByRoom\r\n" +
-        " 8 - SearchGroupsByName\r\n 9 - StudentCreate,\r\n 10 - StudentEdit,\r\n 11 - StudentDelete,\r\n 12 - GetAllStudents" +
-        " 13 - GetStudentById,\r\n 14 - GetStudentByAge,\r\n 15 - GetAllStudentByGroup,\r\n 16 - SearchStudentByNameOrSurname   ");
+    ConsoleColor.Cyan.WriteConsole("Please choose operation :" +
+        "\n  1 - GroupCreate                                  9 - StudentCreate\n"+
+        "    2 - GroupEdit                                    10 - StudentEdit\n"+
+        "    3 - GroupDelete                                  11 - StudentDelete\n"+
+        "    4 - GetGroupById                                 12 - GetAllStudents\n"+
+        "    5 - GetAllGroups                                 13 - GetStudentById\n"+
+        "    6 - GetAllGroupsByTeacher                        14 - GetStudentByAge\n"+
+        "    7 - GetAllGroupsByRoom                           15 - GetAllStudentByGroup\n"+
+        "    8 - SearchGroupsByName                           16 - SearchStudentByNameOrSurname");
+    
 }
