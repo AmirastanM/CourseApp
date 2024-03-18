@@ -85,8 +85,10 @@ namespace CourseApp.Controllers
 
         {
             var response = _groupService.GetAll();
-
-
+            if(response is null)
+            {
+                ConsoleColor.Red.WriteConsole("Data not found");
+            }
             foreach (var item in response)
             {
                 string data = $"Student name: {item.Name}, Student surname: {item.Teacher}, Student age: {item.Room}";
@@ -159,7 +161,7 @@ namespace CourseApp.Controllers
 
         public void GetByAge()
         {
-            ConsoleColor.Cyan.WriteConsole("Please add student id:");
+            ConsoleColor.Cyan.WriteConsole("Please add age:");
         Age: string ageStr = Console.ReadLine();
             int age;
             bool isCorrectIdFormat = int.TryParse(ageStr, out age);
@@ -172,12 +174,19 @@ namespace CourseApp.Controllers
                 }
                 if (isCorrectIdFormat)
                 {
-                    try // again here!!!!!
-                    {
-                        //_studentService.GetByAge(age);
-                        //var result = _studentService.GetByAge(age);
-                        //string data = $"Id: {result.Id}, Student name: {result.Name}, Student Age: {result.Age}";
-                        //Console.WriteLine(data);
+                    try 
+                    {   _studentService.GetByAge(age);
+                        var result =_studentService.GetByAge(age);
+                        if(result == null)
+                        {
+                            ConsoleColor.Red.WriteConsole("Not exsist, please add again different age");
+                            goto Age;
+                        }
+                        foreach (var item in result)
+                        {
+                            string data = $"Id: {item.Id}, Student name: {item.Name}, Studen surname: {item.Surname}Student Age: {item.Age}";
+                            Console.WriteLine(data);
+                        }
                     }
                     catch (Exception ex)
                     {

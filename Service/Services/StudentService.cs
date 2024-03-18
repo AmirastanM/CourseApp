@@ -75,5 +75,12 @@ namespace Service.Services
         {
             throw new NotImplementedException();
         }
+
+        public List<Student> GetAllStudents()
+        {
+            return _studentRepository.GetAll();
+        }
+
+        
     }
 }
