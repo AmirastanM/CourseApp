@@ -11,6 +11,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using Group = Domain.Models.Group;
 
 namespace CourseApp.Controllers
@@ -80,20 +81,20 @@ namespace CourseApp.Controllers
                     ConsoleColor.Red.WriteConsole("Id cant't be empty, please write again");
                     goto Age;
                 }
-                if(age < 15 || age > 50)
+                if (age < 15 || age > 50)
                 {
                     ConsoleColor.Red.WriteConsole("This age is not possible to add group, please enter correct age");
                     goto Age;
                 }
 
             }
-            
+
             var response = _groupService.GetAll();
-            foreach(var item in response)
+            foreach (var item in response)
             {
                 Console.WriteLine($"Group Id: {item.Id}, Group name: {item.Name}, Group Room: {item.Room}, Teacher name: {item.Teacher}");
             }
-            IdGroup: ConsoleColor.Cyan.WriteConsole("Please add exsist id group: ");
+        IdGroup: ConsoleColor.Cyan.WriteConsole("Please add exsist id group: ");
             var idOfGroup = Console.ReadLine();
             int id;
             bool isCorrectId = int.TryParse(idOfGroup, out id);
@@ -105,7 +106,8 @@ namespace CourseApp.Controllers
                     goto IdGroup;
                 }
                 Group group = _groupService.GetById(id);
-                _studentService.Create(new Student { Name = studentName, Surname = studentSurName, Age = age });
+                _studentService.Create(new Student { Name = studentName, Surname = studentSurName, Age = age, Group = group });
+
             }
 
 
@@ -115,7 +117,8 @@ namespace CourseApp.Controllers
 
         {
             var response = _studentService.GetAll();
-            if(response is null)
+            if (response is null)
+
             {
                 ConsoleColor.Red.WriteConsole("Data not found");
             }
@@ -126,7 +129,7 @@ namespace CourseApp.Controllers
             }
         }
 
-        public void Delete() 
+        public void Delete()
         {
             ConsoleColor.Cyan.WriteConsole("Please add student id:");
         Id: string idStr = Console.ReadLine();
@@ -186,6 +189,14 @@ namespace CourseApp.Controllers
                         goto Id;
                     }
                 }
+               
+                
+            }
+            else
+            {
+                ConsoleColor.Red.WriteConsole("Format is wrong, please write again");
+                goto Id;
+
             }
         }
 
@@ -204,32 +215,50 @@ namespace CourseApp.Controllers
                 }
                 if (isCorrectIdFormat)
                 {
-                    try 
-                    {   var result = _studentService.GetAllWhithExpression(m => m.Age == age);
-                        
-                        if(result == null)
+                    try
+
+                    {
+                        var result = _studentService.GetAllWhithExpression(m => m.Age == age);
+
+                        if (result.Count == 0)
                         {
                             ConsoleColor.Red.WriteConsole("Not exsist, please add again different age");
                             goto Age;
                         }
+
+
                         foreach (var item in result)
                         {
                             string data = $"Id: {item.Id}, Student name: {item.Name}, Studen surname: {item.Surname}Student Age: {item.Age}";
                             Console.WriteLine(data);
                         }
+
                     }
+
                     catch (Exception ex)
                     {
                         ConsoleColor.Red.WriteConsole(ex.Message);
                         goto Age;
                     }
                 }
-            }
-        }
+                else
+                {
+                    ConsoleColor.Red.WriteConsole("Data not found please write again.");
+                    goto Age;
 
+
+                }
+            }
+            else
+            {
+                ConsoleColor.Red.WriteConsole("Input format is wrong, please enter correct format again");
+                goto Age;
+            }
+            }            
+    
         public void SearchByNameOrSurname()
         {
-            ConsoleColor.Cyan.WriteConsole("Please add group name:");
+            ConsoleColor.Cyan.WriteConsole("Please add student name or surname:");
 
         Search: string textStr = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(textStr))
@@ -260,37 +289,50 @@ namespace CourseApp.Controllers
             }
         }
 
-        public void GetAllByGroup()
+        public void GetAllByGroupId()
         {
-            ConsoleColor.Cyan.WriteConsole("Please add Group Name:");
-        GroupName: string groupName = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(groupName))
+            while (true)
             {
-                ConsoleColor.Red.WriteConsole("Input can't be empty");
-                goto GroupName;
-            }
-            try
-            {
-               
-                List<Domain.Models.Student> result = _studentService.GetAllWhithExpression(m => m.Group.Name == groupName);
-                if (result.Count != 0)
+                ConsoleColor.Cyan.WriteConsole("Please add Group Id:");
+            GroupId: string groupIdStr = Console.ReadLine();
+                int id;
+                if (string.IsNullOrWhiteSpace(groupIdStr))
                 {
-                    foreach (var item in result)
-                    {
-                        string data = $"Id: {item.Id} Student name: {item.Name}, Student Surname: {item.Surname}, Student age: {item.Age}";
-                        Console.WriteLine(data);
-                    }
-
-                    ConsoleColor.Red.WriteConsole("Group not found");
+                    ConsoleColor.Red.WriteConsole("Input can't be empty");
+                    goto GroupId;
                 }
+                if (!int.TryParse(groupIdStr, out id))
+                {
+                    ConsoleColor.Red.WriteConsole("Input format is wrong, please add correct format");
+                    goto GroupId;
+                }
+                try
+                {
+                   
+                    List<Student> result = _studentService.GetAllWhithExpression(m => m.Group.Id == id);
+                    if (result.Count != 0)
+                    {
+                        foreach (var item in result)
+                        {
+                            string data = $"Id: {item.Id} Student name: {item.Name}, Student Surname: {item.Surname}, Student age: {item.Age}";
+                            Console.WriteLine(data);
+                        }
+                    
 
-                          
+                        
+                    }
+                    else
+                    {
+                        ConsoleColor.Red.WriteConsole("Group not found");
+                    }
+                    break;
 
-            }
-            catch (Exception ex)
-            {
-                ConsoleColor.Red.WriteConsole(ex.Message);
-                goto GroupName;
+                }
+                catch (Exception ex)
+                {
+                    ConsoleColor.Red.WriteConsole(ex.Message);
+                    goto GroupId;
+                }
             }
         }
 

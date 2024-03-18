@@ -96,7 +96,7 @@ namespace CourseApp.Controllers
 
             foreach (var item in response)
             {
-                string data = $"Group name: {item.Name}, Teacher name: {item.Teacher}, Room name: {item.Room}";
+                string data = $"Group Id: {item.Id}, Group name: {item.Name}, Teacher name: {item.Teacher}, Room name: {item.Room}";
                 Console.WriteLine(data);
             }
         }
@@ -117,13 +117,17 @@ namespace CourseApp.Controllers
                 try
                 {
                     _groupService.Delete(id);
-                    var students = _studentService.GetAllWhithExpression(m => m.Group.Id == id); // exception , think about it back null 
-                    foreach (var student in students)
+                    var students = _studentService.GetAllWhithExpression(m => m.Group.Id == id);
+
+                    if (students != null)
                     {
-                        _studentService.Delete(student.Id);
+                        foreach (var student in students)
+                        {
+                            _studentService.Delete(student.Id);
+                        }
                     }
 
-                    ConsoleColor.Green.WriteConsole("Data succsessfully deleted");
+                    ConsoleColor.Green.WriteConsole("Data successfully deleted");
                 }
                 catch (Exception ex)
                 {

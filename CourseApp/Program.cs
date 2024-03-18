@@ -68,7 +68,7 @@ while (true)
                 studentController.GetByAge();
                 break;
             case (int)OperationType.GetAllStudentByGroup:
-                studentController.GetAllByGroup();
+                studentController.GetAllByGroupId();
                 break;
             case (int)OperationType.SearchStudentByNameOrSurname:
                 studentController.SearchByNameOrSurname();
