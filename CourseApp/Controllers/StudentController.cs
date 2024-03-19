@@ -275,9 +275,9 @@ namespace CourseApp.Controllers
             try
             {
                 var result = _studentService.GetAllWhithExpression(m => m.Name.ToLower().Trim().Contains(textStr.ToLower().Trim()) || m.Surname.ToLower().Trim().Contains(textStr.ToLower().Trim()));
-                if (result == null)
+                if (result.Count == 0)
                 {
-                    ConsoleColor.Red.WriteConsole("Group is not found");
+                    ConsoleColor.Red.WriteConsole("Data not found");
                     goto Search;
                 }
 
